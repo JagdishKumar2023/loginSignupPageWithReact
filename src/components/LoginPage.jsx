@@ -1,11 +1,18 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const LoginPage = () => {
   const [loginValue, setloginValue] = useState({
     name: "",
     password: "",
   });
+
+  useEffect(() => {
+    const storedData = localStorage.getItem("loginValue");
+    if (storedData) {
+      setloginValue(JSON.parse(storedData));
+    }
+  }, []);
 
   const handleChange = (e) => {
     let { name, value } = e.target;
@@ -15,6 +22,10 @@ export const LoginPage = () => {
     });
   };
 
+  useEffect(() => {
+    localStorage.setItem("loginValue", JSON.stringify(loginValue));
+  }, [loginValue]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(loginValue);
@@ -22,6 +33,7 @@ export const LoginPage = () => {
 
   return (
     <div>
+      <h1>Login Page</h1>
       <form onSubmit={handleSubmit}>
         <input
           type="text"

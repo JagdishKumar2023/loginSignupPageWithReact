@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const SignupPage = () => {
   const [inputValue, setinputValue] = useState({
@@ -10,13 +10,26 @@ export const SignupPage = () => {
     number: "",
   });
 
+  useEffect(() => {
+    const storedData = localStorage.getItem("inputValue");
+    if (storedData) {
+      setinputValue(JSON.parse(storedData));
+    }
+  }, []);
+
   const handleChange = (e) => {
     let { name, value } = e.target;
+    // console.log(value);
+
     setinputValue({
       ...inputValue,
       [name]: value,
     });
   };
+
+  useEffect(() => {
+    localStorage.setItem("inputValue", JSON.stringify(inputValue));
+  }, [inputValue]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
